@@ -1,5 +1,5 @@
-const config = require('../config/auth.config')
-const db = require('../models/index')
+const config = require('../auth.config')
+const db = require('../../models/index')
 //Access to our db through user and role variable
 const User = db.user
 const Role = db.role
