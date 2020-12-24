@@ -6,6 +6,8 @@ db.mongoose = mongoose
 
 db.user = require('./user.model')
 db.role = require('./role.model')
+db.comment = require('./comment.model')
+db.post = require('./post.model')
 
 db.Roles = ['users', 'admin']
 
