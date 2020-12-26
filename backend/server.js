@@ -34,7 +34,12 @@ db.mongoose
 
 // Simple route, do I work?
 app.get('/', (req,res) => {
-    res.json({message: "Welcome to the home page"})
+    res.json({message: "Welcome to Petflix!"})
+})
+
+// route for about the developer section
+app.get('/about', (req,res) => {
+  res.json({message: "About the app & developers!"})
 })
 
 //Import the routes we wrote
