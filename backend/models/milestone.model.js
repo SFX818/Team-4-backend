@@ -6,7 +6,8 @@ const Milestone = mongoose.model(
         event: String,
         description: String,
         date: Date
-    })
+    },
+    {timestamps: true})
 )
 
 module.exports = Milestone
