@@ -32,9 +32,9 @@ db.mongoose
         process.exit
     })
 
-// Simple route, do I work?
+// simple landing page to PetFlix
 app.get('/', (req,res) => {
-    res.json({message: "Welcome to Petflix!"})
+  res.json({message: "Welcome to Petflix!"})
 })
 
 // route for about the developer section
@@ -46,8 +46,8 @@ app.get('/about', (req,res) => {
 require('./routes/auth.routes')(app)
 require('./routes/user.routes')(app)
 require('./routes/home.routes')(app)
-require('./routes/post.routes')(app)
-require('./routes/pet.routes')(app)
+// require('./routes/post.routes')(app)
+// require('./routes/pet.routes')(app)
 
 
 // Set the port, listen for request
