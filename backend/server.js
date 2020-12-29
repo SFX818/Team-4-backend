@@ -7,7 +7,7 @@ const app = express()
 
 app.use(cors())
 
-
+// might refactor to limit image file size "({ limit: "30mb", extended...})""
 // Parse requests of content type - application/json
 app.use(bodyParser.json())
 
@@ -45,6 +45,9 @@ app.get('/about', (req,res) => {
 //Import the routes we wrote
 require('./routes/auth.routes')(app)
 require('./routes/user.routes')(app)
+require('./routes/home.routes')(app)
+require('./routes/post.routes')(app)
+require('./routes/pet.routes')(app)
 
 
 // Set the port, listen for request

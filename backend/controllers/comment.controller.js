@@ -43,6 +43,7 @@ exports.create = (req, res) => {
         })
 }
 
+// help
 // delete /home/:post_id/:comment_id - delete a single comment with an id 
 exports.delete = (req, res) => {
     const postId = req.params.postId;
