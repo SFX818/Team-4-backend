@@ -1,3 +1,4 @@
+
 // gabe
 // findAll pets
 
@@ -12,3 +13,4 @@ exports.userBoard = (req, res) => {
 exports.adminBoard = (req, res) => {
     res.status(200).send('Admin content')
 } 
+
