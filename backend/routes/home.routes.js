@@ -3,8 +3,11 @@
 // get posts (findAll)
 
 const posts = require("../controllers/post.controller")
+let router = require("express").Router();
 
 module.exports = app => {
-    router.get("/home")
-    app.use("/tutorials", router)
+    router.get("/home", posts.findAll)
+
+    // double check this
+    app.use("/home", router)
 }
