@@ -5,6 +5,14 @@ const Post = mongoose.model(
     new mongoose.Schema({
         image: String,
         description: String,
+        likeCount: {
+            type: Number,
+            default: 0
+        },
+        createdAt: {
+            type: Date,
+            default: new Date()
+        },
         comments: [
             {
                 type: mongoose.Schema.Types.ObjectId,
