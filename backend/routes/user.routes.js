@@ -18,14 +18,19 @@ module.exports = function(app) {
     app.get("/api/test/admin", [authJwt.verifyWebToken, authJwt.isAdmin],
     controller.adminBoard
     )
-    //user goes to own page
-    app.get('/:userId', [authJwt.verifyWebToken], controller.userBoard)
-    //user is grabbing the specific post
+
+    // user profile - is the findUserPet handler necessary?
+    app.get('/:userId', [authJwt.verifyWebToken], [controller.userBoard, controller.findUserPets])
+    
+    // user is grabbing their specific post
     app.get('/:userId/:postId', [authJwt.verifyWebToken], posts.findOne)
-    //renders form to create a post
+    
+    // renders form to create a post
     app.post('/:userId/post', [authJwt.verifyWebToken], posts.create)
-    //update post
+    
+    // update post
     app.put('/:userId/:postId', [authJwt.verifyWebToken], posts.update)
-    //delete
+    
+    // delete
     app.delete('/:userId/:postId', [authJwt.verifyWebToken], posts.delete)
 }   
