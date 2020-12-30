@@ -1,5 +1,5 @@
-// gabe
 const db = require("../models")
+
 const Pet = db.pet
 const JournalEntry = db.journalEntry
 const Milestone = db.milestone
@@ -37,7 +37,7 @@ exports.create = (req,res) => {
     pet
         .save(pet)
         .then((data) => {
-            res.send(data)
+            res.status(201).send(data)
         })
         .catch((err) => {
             res.status(500).send({
@@ -62,7 +62,7 @@ exports.update = (req, res) => {
         if(!data) {
             res.status(400).send({message: "Pet not found with id" + id})
         } else {
-            res.send(data)
+            res.status(201).send(data)
         }
     })
     .catch((err) => {

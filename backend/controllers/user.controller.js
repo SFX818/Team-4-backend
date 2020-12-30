@@ -17,7 +17,7 @@ exports.userBoard = async (req, res) => {
         }).catch((err) => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving all the posts."
+                    err.message || "Some error occurred while retrieving user info."
             })
         })
 }
@@ -34,7 +34,7 @@ exports.findUserPets = async (req, res) => {
         }).catch((err) => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving all the posts."
+                    err.message || "Some error occurred while retrieving all the user's pets."
             })
         })
 }

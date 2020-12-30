@@ -1,11 +1,10 @@
-// review in office hours vvv
 const db = require("../models")
 
 const Comment = db.comment
 const Post = db.post
 
 // check with instructional team to figure out req.params stuff
-// get /home/:post_id - renders all comments for specific post
+// get /home/:postId - renders all comments for specific post
 exports.findAll = (req, res) => {    
     const postId = req.params.post_id
     Comment.find({postId})
@@ -34,7 +33,7 @@ exports.create = (req, res) => {
     comment
         .save(comment)
         .then((data) => {
-            res.send(data)
+            res.status(201).send(data)
         })
         // catches any errors
         .catch(err => {
@@ -45,7 +44,6 @@ exports.create = (req, res) => {
         })
 }
 
-// help
 // delete /home/:post_id/:comment_id - delete a single comment with an id 
 exports.delete = (req, res) => {
     const postId = req.params.post_id;

@@ -1,8 +1,9 @@
 const db = require("../models")
+
 const Post = db.post
 
+// read /home - find all the post in the database
 exports.findAll = async (req, res) => {
-    // Find all the post in the database
     await Post.find()
         .then((data) => {
             res.send(data);
@@ -14,10 +15,9 @@ exports.findAll = async (req, res) => {
         })
 }
 
+// read /home/:postId - find a single post with an id
 exports.findOne = (req, res) => {
-    // Find a single post in the database
     const postId = req.params.postId;
-    // delete tutorial by the id being passed by id
     Post.findById(
         { _id: postId })
         .then((data) => {
@@ -35,25 +35,75 @@ exports.findOne = (req, res) => {
         })
 }
 
-// help
-// delete /home/:postId/:commentId - delete a single comment with an id 
+// post /:userId/post - create a post
+exports.create = (req,res) => {
+    const post = req.body
+    //Validate request
+    if(!req.body.name){
+        res.status(400).send({message: "Name cannot be empty!"})
+    }
+    //Create a pet
+    const newPost =  new Post(post)
+    // Save Pet in the database
+    newPost
+        .save()
+        .then((data) => {
+            res.status(201).send(data)
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occured while creating a Pet."
+            })
+        })
+}
+
+// delete /:userId/:postId - delete a single post with an id 
 exports.delete = (req, res) => {
-    const postId = req.params.postId;
-    const id = req.params.commentId
+    if(!req.body.userId){
+        res.status(400).send({message: "You can only delete your own post!"})
+    }
     // delete tutorial by the id being passed by id
-    Comment.deleteOne(
-        { _id: id })
+    Post.deleteOne(
+        { _id: postId })
         .then((data) => {
             // validation
             if (!data) {
-                return res.status(400).send({ message: "Not found comment with id" + id })
+                return res.status(400).send({ message: "Not found post with id" + id })
             } else {
                 res.send(data)
             }
         }).catch((err) => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while deleting one comment"
+                    err.message || "Some error occurred while deleting one post"
             })
         })
 }
+
+// update /:userId/:postId - update a single comment with an id 
+exports.update = (req, res) => {
+    if(!req.body.userId){
+        res.status(400).send({message: "You can only update your own post!"})
+    }
+    const id = req.params.postId
+    Post.findByIdAndUpdate(
+        {_id: id},
+        {image: req.body.image},
+        {description: req.body.description}, 
+    )
+    .then((data) => {
+        if(!data) {
+            res.status(400).send({message: "Post not found with id" + id})
+        } else {
+            res.send(data)
+        }
+    })
+    .catch((err) => {
+        res.status(500).send({
+            message:
+            err.message || "Some error occured while updating this post!"
+        })
+    })
+}
+
