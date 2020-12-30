@@ -5,7 +5,6 @@ const Post = db.post
 
 exports.findAll = async (req, res) => {
     // Find all the post in the database
-    // res.status(200).send('Home content')
     await Post.find()
         .then((data) => {
             res.send(data);

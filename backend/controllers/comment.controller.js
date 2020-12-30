@@ -1,7 +1,8 @@
-const { comment } = require("../models");
+// review in office hours vvv
 const db = require("../models")
 
 const Comment = db.comment
+const Post = db.post
 
 // get /home/:post_id - renders all comments for specific post
 exports.findAll = (req, res) => {    
@@ -46,8 +47,8 @@ exports.create = (req, res) => {
 // help
 // delete /home/:post_id/:comment_id - delete a single comment with an id 
 exports.delete = (req, res) => {
-    const postId = req.params.postId;
-    const id = req.params.id
+    const postId = req.params.post_id;
+    const id = req.params.comment_id
     // delete tutorial by the id being passed by id
     Comment.deleteOne(
         { _id: id })
