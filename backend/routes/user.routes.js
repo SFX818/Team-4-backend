@@ -11,7 +11,9 @@ module.exports = function(app) {
         next()
     })
 
-    app.get('/api/test/all', controller.allAccess)
+    app.get('/', controller.allAccess)
+
+    app.get('/about', [controller.allAccess, controller.About])
 
     app.get("/api/test/admin", [authJwt.verifyWebToken, authJwt.isAdmin],
     controller.adminBoard

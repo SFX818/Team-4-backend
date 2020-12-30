@@ -19,35 +19,27 @@ const db = require('./models/index')
 const Role = db.role
 
 db.mongoose
-    .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .then(() => {
-        console.log('Successfully connected to MongoDB')
-        initial()
-    })
-    .catch(err => {
-        console.error('Connection error', err)
-        process.exit
-    })
+  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+  })
+  .then(() => {
+      console.log('Successfully connected to MongoDB')
+      initial()
+  })
+  .catch(err => {
+      console.error('Connection error', err)
+      process.exit
+  })
 
-// simple landing page to PetFlix
-app.get('/', (req,res) => {
-  res.json({message: "Welcome to Petflix!"})
-})
 
-// route for about the developer section
-app.get('/about', (req,res) => {
-  res.json({message: "About the app & developers!"})
-})
 
 //Import the routes we wrote
 require('./routes/auth.routes')(app)
 require('./routes/user.routes')(app)
 require('./routes/home.routes')(app)
-// require('./routes/post.routes')(app)
-// require('./routes/pet.routes')(app)
+require('./routes/post.routes')(app)
+require('./routes/pet.routes')(app)
 
 
 // Set the port, listen for request
