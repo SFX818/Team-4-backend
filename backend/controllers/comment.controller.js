@@ -4,10 +4,11 @@ const db = require("../models")
 const Comment = db.comment
 const Post = db.post
 
+// check with instructional team to figure out req.params stuff
 // get /home/:post_id - renders all comments for specific post
 exports.findAll = (req, res) => {    
-    const postId = req.params.id
-    Comment.find()
+    const postId = req.params.post_id
+    Comment.find({postId})
         .then((data) => {
             res.send(data);
         }).catch((err) => {

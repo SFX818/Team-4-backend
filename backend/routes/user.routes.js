@@ -13,9 +13,17 @@ module.exports = function(app) {
 
     app.get('/api/test/all', controller.allAccess)
 
-    app.get('/api/test/user', [authJwt.verifyWebToken], controller.userBoard)
-
     app.get("/api/test/admin", [authJwt.verifyWebToken, authJwt.isAdmin],
     controller.adminBoard
     )
+    //user goes to own page
+    app.get('/:username', [authJwt.verifyWebToken], controller.userBoard)
+    //user is grabbing the specific post
+    app.get('/:username/:postId', [authJwt.verifyWebToken], posts.findOne)
+    //renders form to create a post
+    app.post('/:username/post', [authJwt.verifyWebToken], posts.create)
+    //update post
+    app.put('/:username/:postId', [authJwt.verifyWebToken], posts.update)
+    //delete
+    app.delete('/:username/:postId', [authJwt.verifyWebToken], posts.delete)
 }   
