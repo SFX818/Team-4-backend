@@ -21,17 +21,17 @@ module.exports = function(app) {
     )
 
     // user profile - is the findUserPet handler necessary?
-    app.get('/:userId', [authJwt.verifyWebToken], [controller.userBoard, controller.findUserPets])
+    app.get('/profile', [authJwt.verifyWebToken], [controller.userBoard, controller.findUserPets])
     
     // user is grabbing their specific post
-    app.get('/:userId/:postId', [authJwt.verifyWebToken], posts.findOne)
+    app.get('/profile/:postId', [authJwt.verifyWebToken], posts.findOne)
     
     // renders form to create a post
-    app.post('/:userId/post', [authJwt.verifyWebToken], posts.create)
+    app.post('/profile/post', [authJwt.verifyWebToken], posts.create)
     
     // update post
-    app.put('/:userId/:postId', [authJwt.verifyWebToken], posts.update)
+    app.put('/profile/:postId', [authJwt.verifyWebToken], posts.update)
     
     // delete
-    app.delete('/:userId/:postId', [authJwt.verifyWebToken], posts.delete)
+    app.delete('/profile/:postId', [authJwt.verifyWebToken], posts.delete)
 }   
