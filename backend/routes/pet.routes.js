@@ -1,31 +1,42 @@
-const user = require("../controllers/post.controller")
+const { authJwt } = require('../middlewares')
+const controller = require('../controllers/user.controller')
+
 const pet = require("../controllers/pet.controller")
 const journalEntry = require("../controllers/journalEntry.controller")
 const milestone = require("../controllers/milestone.controller")
+
 let router = require("express").Router();
 
-module.exports = function(app) {
+module.exports = app => {
     // get user's pet's profile to render journal entries
-    router.get("/", pet.findAllJournals, pet.findAllMilestones)
+    router.get("/:petId", [authJwt.verifyWebToken], [pet.findAllJournals, pet.findAllMilestones, pet.findOne])
+
+    //Form to add pet a pet to user profile
+    router.post('/pet', [authJwt.verifyWebToken], pet.create)
+    
+    //Update a pet with id
+    router.put('/:petId', pet.update)
+
+    //Delete a pet
+    router.delete('/:petId', pet.delete)
 
     // post route for user's pet's journal entry
-    router.post("/journal", journalEntry.create)
+    router.post("/:petId/journal", journalEntry.create)
 
     // update route for user's pet's journal entry
-    router.update("/:journalId", journalEntry.update)
+    router.update("/:petId/:journalId", journalEntry.update)
     
     // delete route for user's pet's journal entry
-    router.delete("/:journalId", journalEntry.delete)
+    router.delete("/:petId/:journalId", journalEntry.delete)
 
     // post route for user's pet's milestone
-    router.post("/milestone", milestone.create)
+    router.post("/:petId/milestone", milestone.create)
 
     // update route for user's pet's milestone
-    router.update("/:milestoneId", milestone.update)
+    router.update("/:petId/:milestoneId", milestone.update)
     
     // delete route for user's pet's milestone
-    router.delete("/:milestoneId", milestone.delete)
+    router.delete("/:petId/:milestoneId", milestone.delete)
 
-    // pet route to connect to express & router method
-    app.use('/:userId/:petId', router)
+    app.use('/:userId', router)
 }

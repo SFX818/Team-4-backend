@@ -1,7 +1,3 @@
-
-// gabe
-// findAll pets
-
 exports.allAccess = (req, res) => {
     res.status(200).send("Welcome to Petflix!")
 }

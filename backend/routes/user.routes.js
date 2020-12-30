@@ -19,13 +19,13 @@ module.exports = function(app) {
     controller.adminBoard
     )
     //user goes to own page
-    app.get('/:username', [authJwt.verifyWebToken], controller.userBoard)
+    app.get('/:userId', [authJwt.verifyWebToken], controller.userBoard)
     //user is grabbing the specific post
-    app.get('/:username/:postId', [authJwt.verifyWebToken], posts.findOne)
+    app.get('/:userId/:postId', [authJwt.verifyWebToken], posts.findOne)
     //renders form to create a post
-    app.post('/:username/post', [authJwt.verifyWebToken], posts.create)
+    app.post('/:userId/post', [authJwt.verifyWebToken], posts.create)
     //update post
-    app.put('/:username/:postId', [authJwt.verifyWebToken], posts.update)
+    app.put('/:userId/:postId', [authJwt.verifyWebToken], posts.update)
     //delete
-    app.delete('/:username/:postId', [authJwt.verifyWebToken], posts.delete)
+    app.delete('/:userId/:postId', [authJwt.verifyWebToken], posts.delete)
 }   

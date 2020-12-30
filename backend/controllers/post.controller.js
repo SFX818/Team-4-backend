@@ -16,26 +16,21 @@ exports.findAll = async (req, res) => {
 
 exports.findOne = (req, res) => {
     // Find a single post in the database
-    if (!req.body.username) {
-        res.status(400).send({ message: "Please enter your username!" })
-        return;
-    }
-    const postId = req.params.id;
-    const comment = new Comment({
-        username: req.body.username,
-        content: req.body.content,
-        postId: postId
-    })
-    comment
-        .save(comment)
+    const postId = req.params.postId;
+    // delete tutorial by the id being passed by id
+    Post.findById(
+        { _id: postId })
         .then((data) => {
-            res.send(data)
-        })
-        // catches any errors
-        .catch(err => {
+            // validation
+            if (!data) {
+                return res.status(400).send({ message: "Not found post with id" + id })
+            } else {
+                res.send(data)
+            }
+        }).catch((err) => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating a comment!"
+                    err.message || "Some error occurred while finding one post"
             })
         })
 }
@@ -46,7 +41,7 @@ exports.delete = (req, res) => {
     const postId = req.params.postId;
     const id = req.params.commentId
     // delete tutorial by the id being passed by id
-    Comment.delete(
+    Comment.deleteOne(
         { _id: id })
         .then((data) => {
             // validation

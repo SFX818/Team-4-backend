@@ -32,15 +32,12 @@ db.mongoose
       process.exit
   })
 
-
-
 //Import the routes we wrote
 require('./routes/auth.routes')(app)
 require('./routes/user.routes')(app)
 require('./routes/home.routes')(app)
 require('./routes/post.routes')(app)
 require('./routes/pet.routes')(app)
-
 
 // Set the port, listen for request
 const PORT = process.env.PORT || 8080
