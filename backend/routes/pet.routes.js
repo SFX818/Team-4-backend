@@ -5,12 +5,8 @@
 // do pets first!! stretch goals later
 // /:username/:pet_id
 
-// /:username/:pet_id/journal
-
-// /:username/:pet_id/milestone
-
 module.exports = app => {
-    const tutorials = require('../controllers/pet.controller.js')
+    const pet = require('../controllers/pet.controller.js')
     let router = require('express').Router()
 
     //Render pet profile specific to user

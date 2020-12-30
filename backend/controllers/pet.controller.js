@@ -1,4 +1,5 @@
-// Gabe
+const db = require('../models')
+const Pet = db.pet
 
 //         name: String,
 //         breed: String,
