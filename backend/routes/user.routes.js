@@ -1,5 +1,6 @@
 const { authJwt } = require('../middlewares')
-const controller = require('../config/controllers/user.controller')
+const controller = require('../controllers/user.controller')
+const posts = require('../controllers/post.controller')
 
 module.exports = function(app) {
     app.use((req, res, next) => {
@@ -11,11 +12,26 @@ module.exports = function(app) {
         next()
     })
 
-    app.get('/api/test/all', controller.allAccess)
+    app.get('/', controller.allAccess)
 
-    app.get('/api/test/user', [authJwt.verifyWebToken], controller.userBoard)
+    app.get('/about', [controller.allAccess, controller.About])
 
     app.get("/api/test/admin", [authJwt.verifyWebToken, authJwt.isAdmin],
     controller.adminBoard
     )
-}    
+
+    // user profile - is the findUserPet handler necessary?
+    app.get('/:userId', [authJwt.verifyWebToken], [controller.userBoard, controller.findUserPets])
+    
+    // user is grabbing their specific post
+    app.get('/:userId/:postId', [authJwt.verifyWebToken], posts.findOne)
+    
+    // renders form to create a post
+    app.post('/:userId/post', [authJwt.verifyWebToken], posts.create)
+    
+    // update post
+    app.put('/:userId/:postId', [authJwt.verifyWebToken], posts.update)
+    
+    // delete
+    app.delete('/:userId/:postId', [authJwt.verifyWebToken], posts.delete)
+}   
