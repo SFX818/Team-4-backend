@@ -1,6 +1,7 @@
 const db = require("../models")
 
 const Post = db.post
+const User = db.user
 
 // read /home - find all the post in the database
 exports.findAll = async (req, res) => {
@@ -37,14 +38,15 @@ exports.findOne = (req, res) => {
 
 // post /:userId/post - create a post
 exports.create = (req,res) => {
+    // make sure to write it out later
     const post = req.body
     //Validate request
     if(!req.body.name){
         res.status(400).send({message: "Name cannot be empty!"})
     }
-    //Create a pet
+    //Create a post
     const newPost =  new Post(post)
-    // Save Pet in the database
+    // Save Post in the database
     newPost
         .save()
         .then((data) => {
@@ -60,10 +62,16 @@ exports.create = (req,res) => {
 
 // delete /:userId/:postId - delete a single post with an id 
 exports.delete = (req, res) => {
-    if(!req.body.userId){
+    if(!req.userId){
         res.status(400).send({message: "You can only delete your own post!"})
     }
-    // delete tutorial by the id being passed by id
+    User.findByIdandUpdate(
+        { _id: req.userId },
+        {
+            "$pull": { ObjectId: req.body.postId }
+        }
+    )
+    // delete post by the id being passed by id
     Post.deleteOne(
         { _id: postId })
         .then((data) => {
@@ -83,7 +91,7 @@ exports.delete = (req, res) => {
 
 // update /:userId/:postId - update a single comment with an id 
 exports.update = (req, res) => {
-    if(!req.body.userId){
+    if(!req.userId){
         res.status(400).send({message: "You can only update your own post!"})
     }
     const id = req.params.postId

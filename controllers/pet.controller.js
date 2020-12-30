@@ -1,12 +1,13 @@
 const db = require("../models")
 
 const Pet = db.pet
+const User = db.user
 const JournalEntry = db.journalEntry
 const Milestone = db.milestone
 
 //Find a single Tutorial with an id (GET)
 exports.findOne = (req, res) => {
-    const id = req.params.pet_id
+    const id = req.params.petId
     const userId = req.params.username
     //Find pet by the id being passed by id
     Pet.findById(id).then((data) => {
@@ -49,8 +50,8 @@ exports.create = (req,res) => {
 
 //Update a pet with id (UPDATE)
 exports.update = (req, res) => {
-    const id = req.params.pet_id
-    Tutorial.findByIdAndUpdate(
+    const id = req.params.petId
+    Pet.findByIdAndUpdate(
         {pet_id: id},
         {name: req.body.name},
         {breed: req.body.breed}, 
@@ -75,7 +76,13 @@ exports.update = (req, res) => {
 
 //Delete a pet with id (DELETE)
 exports.delete = (req, res) => {
-    const id = req.params.pet_id
+    const id = req.params.petId
+    User.findByIdandUpdate(
+        { _id: req.userId },
+        {
+            "$pull": { ObjectId: req.body.petId }
+        }
+    )
     Pet.findByIdAndDelete(
         {pet_id: id},
         {name: req.body.name},

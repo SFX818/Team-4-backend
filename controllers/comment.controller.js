@@ -49,6 +49,12 @@ exports.delete = (req, res) => {
     const postId = req.params.post_id;
     const id = req.params.comment_id
     // delete tutorial by the id being passed by id
+    Post.findByIdandUpdate(
+        { _id: req.body.postId},
+        {
+            "$pull": { ObjectId: req.body.commentId }
+        }
+    )
     Comment.deleteOne(
         { _id: id })
         .then((data) => {
