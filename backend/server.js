@@ -45,6 +45,7 @@ app.get('/about', (req,res) => {
 //Import the routes we wrote
 require('./routes/auth.routes')(app)
 require('./routes/user.routes')(app)
+require('./routes/pet.routes')(app)
 
 
 // Set the port, listen for request

@@ -23,5 +23,5 @@ module.exports = app => {
     router.delete('/:username/:pet_id', pet.delete)
   
 
-    app.use('/api/pet', router)
+    app.use('/:username/:pet_id', router)
 }
