@@ -12,6 +12,9 @@ module.exports = app => {
     
     // post route to create a comment
     router.post('/:postId/comment', comment.create)
+
+    // delete route for comments
+    router.delete('/:postId/:commentId', comment.delete)
     
     // pet route to connect to express & router method
     app.use('/home', router)
