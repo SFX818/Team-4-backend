@@ -65,7 +65,7 @@ exports.delete = (req, res) => {
     if(!req.userId){
         res.status(400).send({message: "You can only delete your own post!"})
     }
-    User.findByIdandUpdate(
+    User.findByIdAndUpdate(
         { _id: req.userId },
         {
             "$pull": { ObjectId: req.body.postId }
