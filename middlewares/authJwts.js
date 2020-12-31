@@ -19,7 +19,7 @@ verifyWebToken = (req, res, next) => {
             return res.status(403).send({message: 'Unauthorized'})
         }
         // Set user id to decoded id
-        req.userId = decoded.userId
+        req.userId = decoded.id
         next()
     })
 }
