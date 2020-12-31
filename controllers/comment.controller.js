@@ -6,7 +6,7 @@ const Post = db.post
 // check with instructional team to figure out req.params stuff
 // get /home/:postId - renders all comments for specific post
 exports.findAll = (req, res) => {    
-    const postId = req.params.post_id
+    const postId = req.params.postId
     Comment.find({postId})
         .then((data) => {
             res.send(data);
@@ -46,10 +46,10 @@ exports.create = (req, res) => {
 
 // delete /home/:post_id/:commentId - delete a single comment with an id 
 exports.delete = (req, res) => {
-    const postId = req.params.post_id;
-    const id = req.params.comment_id
+    const postId = req.params.postId;
+    const id = req.params.commentId
     // delete tutorial by the id being passed by id
-    Post.findByIdandUpdate(
+    Post.findByIdAndUpdate(
         { _id: req.body.postId},
         {
             "$pull": { ObjectId: req.body.commentId }
