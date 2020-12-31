@@ -7,7 +7,7 @@ const app = express()
 
 app.use(cors())
 
-
+// might refactor to limit image file size "({ limit: "30mb", extended...})""
 // Parse requests of content type - application/json
 app.use(bodyParser.json())
 
@@ -15,32 +15,22 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
 // Setup Mongoose
-const db = require('./models/index')
+const db = require('./models/index.js')
 const Role = db.role
 
 db.mongoose
-    .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .then(() => {
-        console.log('Successfully connected to MongoDB')
-        initial()
-    })
-    .catch(err => {
-        console.error('Connection error', err)
-        process.exit
-    })
-
-// Simple route, do I work?
-app.get('/', (req,res) => {
-    res.json({message: "Welcome to Petflix!"})
-})
-
-// route for about the developer section
-app.get('/about', (req,res) => {
-  res.json({message: "About the app & developers!"})
-})
+  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+  })
+  .then(() => {
+      console.log('Successfully connected to MongoDB')
+      initial()
+  })
+  .catch(err => {
+      console.error('Connection error', err)
+      process.exit
+  })
 
 //Import the routes we wrote
 require('./routes/auth.routes')(app)

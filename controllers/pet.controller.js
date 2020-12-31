@@ -1,15 +1,13 @@
-const db = require('../models')
-const Pet = db.pet
+const db = require("../models")
 
-//         name: String,
-//         breed: String,
-//         birthday: Date,
-//         species: String,
-//         image: String,
+const Pet = db.pet
+const User = db.user
+const JournalEntry = db.journalEntry
+const Milestone = db.milestone
 
 //Find a single Tutorial with an id (GET)
 exports.findOne = (req, res) => {
-    const id = req.params.pet_id
+    const id = req.params.petId
     const userId = req.params.username
     //Find pet by the id being passed by id
     Pet.findById(id).then((data) => {
@@ -20,8 +18,6 @@ exports.findOne = (req, res) => {
         }
     })
 }
-
-
 
 //Create and save pet (POST)
 exports.create = (req,res) => {
@@ -42,7 +38,7 @@ exports.create = (req,res) => {
     pet
         .save(pet)
         .then((data) => {
-            res.send(data)
+            res.status(201).send(data)
         })
         .catch((err) => {
             res.status(500).send({
@@ -52,11 +48,10 @@ exports.create = (req,res) => {
         })
 }
 
-
 //Update a pet with id (UPDATE)
 exports.update = (req, res) => {
-    const id = req.params.pet_id
-    Tutorial.findByIdAndUpdate(
+    const id = req.params.petId
+    Pet.findByIdAndUpdate(
         {pet_id: id},
         {name: req.body.name},
         {breed: req.body.breed}, 
@@ -68,7 +63,7 @@ exports.update = (req, res) => {
         if(!data) {
             res.status(400).send({message: "Pet not found with id" + id})
         } else {
-            res.send(data)
+            res.status(201).send(data)
         }
     })
     .catch((err) => {
@@ -79,10 +74,15 @@ exports.update = (req, res) => {
     })
 }
 
-
 //Delete a pet with id (DELETE)
 exports.delete = (req, res) => {
-    const id = req.params.pet_id
+    const id = req.params.petId
+    User.findByIdandUpdate(
+        { _id: req.userId },
+        {
+            "$pull": { ObjectId: req.body.petId }
+        }
+    )
     Pet.findByIdAndDelete(
         {pet_id: id},
         {name: req.body.name},
