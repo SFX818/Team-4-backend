@@ -1,5 +1,0 @@
-OH: 
-
-1. Handling logic for mongodb while using routes with multiple parameters
-
-2. Connecting mongoose association and accessing referenced documents (best to grab comments referenced from post model OR have separate comment controller?)
