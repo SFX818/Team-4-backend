@@ -35,5 +35,5 @@ module.exports = app => {
     // // delete route for user's pet's milestone
     // router.delete("/:petId/:milestoneId", milestone.delete)
 
-    app.use('/:userId', router)
+    app.use('/profile', router)
 }
