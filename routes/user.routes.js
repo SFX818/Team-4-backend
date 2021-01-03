@@ -23,9 +23,6 @@ module.exports = function(app) {
     // user profile - is the findUserPet handler necessary?
     app.get('/profile', [authJwt.verifyWebToken], [controller.userBoard, controller.findUserPets])
     
-    // user is grabbing their specific post
-    app.get('/profile/:postId', [authJwt.verifyWebToken], posts.findOne)
-    
     // renders form to create a post
     app.post('/profile/post', [authJwt.verifyWebToken], posts.create)
     
