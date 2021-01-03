@@ -36,7 +36,7 @@ exports.findOne = (req, res) => {
         })
 }
 
-// post /:userId/post - create a post
+// post /profile/post - create a post
 exports.create = (req,res) => {
     // make sure to write it out later
     const post = req.body
@@ -60,12 +60,12 @@ exports.create = (req,res) => {
         })
 }
 
-// delete /:userId/:postId - delete a single post with an id 
+// delete /profile/:postId - delete a single post with an id 
 exports.delete = (req, res) => {
     if(!req.userId){
         res.status(400).send({message: "You can only delete your own post!"})
     }
-    User.findByIdandUpdate(
+    User.findByIdAndUpdate(
         { _id: req.userId },
         {
             "$pull": { ObjectId: req.body.postId }
@@ -89,7 +89,7 @@ exports.delete = (req, res) => {
         })
 }
 
-// update /:userId/:postId - update a single comment with an id 
+// update /profile/:postId - update a single comment with an id 
 exports.update = (req, res) => {
     if(!req.userId){
         res.status(400).send({message: "You can only update your own post!"})
