@@ -16,6 +16,7 @@ exports.findAll = async (req, res) => {
         })
 }
 
+
 // read /home/:postId - find a single post with an id
 exports.findOne = (req, res) => {
     const postId = req.params.postId;
