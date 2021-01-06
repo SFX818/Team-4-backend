@@ -11,10 +11,8 @@ const bcrypt = require('bcryptjs')
 
 //This will handle stand up
 exports.signup = (req, res) => {
-    const password = await req.body.password
-
-    //We are going to make out user object using the params returned from req
-    const password = await req.body.password
+    //We are going to make our user object using the params returned from req
+    const password = req.body.password
 
     const user = new User({
         firstName: req.body.firstName,
@@ -26,14 +24,14 @@ exports.signup = (req, res) => {
         password: bcrypt.hashSync(password, 8),
     })
     // We save that user, and if there is an error, we throw that error
-    await user.save((err, user) => {
+    user.save((err, user) => {
         if (err) {
             res.status(500).send({message: err})
             return
         }
         //If no error, we check if roles was passed on req.params
         if(req.body.roles) {
-            await Role.find({
+            Role.find({
                 name: {$in: req.body.roles}
             }, (err, roles) => {
                 if (err) {
@@ -56,7 +54,7 @@ exports.signup = (req, res) => {
             })
 
         } else {
-            await Role.findOne({name: 'user'}, (err, role) => {
+            Role.findOne({name: 'user'}, (err, role) => {
                 if(err) {
                     res.status(500).send({message: err})
                     return
