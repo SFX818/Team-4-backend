@@ -17,14 +17,14 @@ exports.findAll = async (req, res) => {
 }
 
 // read /home/:postId - find a single post with an id
-exports.findOne = (req, res) => {
+exports.findOne = async (req, res) => {
     const postId = req.params.postId;
-    Post.findById(
+    await Post.findById(
         { _id: postId })
         .then((data) => {
             // validation
             if (!data) {
-                return res.status(400).send({ message: "Not found post with id" + id })
+                return res.status(400).send({ message: "Not found post with id" + postId })
             } else {
                 res.send(data)
             }
@@ -37,17 +37,17 @@ exports.findOne = (req, res) => {
 }
 
 // post /profile/post - create a post
-exports.create = (req,res) => {
+exports.createPost = async (req,res) => {
     // make sure to write it out later
-    const post = req.body
+    const { username, image, description } = req.body;
     //Validate request
-    if(!req.body.name){
-        res.status(400).send({message: "Name cannot be empty!"})
+    if(!req.body.username){
+        res.status(400).send({message: "Username cannot be empty!"})
     }
     //Create a post
-    const newPost =  new Post(post)
+    const newPost = new Post({ username, image, description })
     // Save Post in the database
-    newPost
+    await newPost
         .save()
         .then((data) => {
             res.status(201).send(data)
@@ -60,11 +60,14 @@ exports.create = (req,res) => {
         })
 }
 
+
 // delete /profile/:postId - delete a single post with an id 
-exports.delete = (req, res) => {
+exports.deletePost = (req, res) => {
     if(!req.userId){
         res.status(400).send({message: "You can only delete your own post!"})
     }
+    const postId = req.params.postId
+
     User.findByIdAndUpdate(
         { _id: req.userId },
         {
@@ -77,7 +80,7 @@ exports.delete = (req, res) => {
         .then((data) => {
             // validation
             if (!data) {
-                return res.status(400).send({ message: "Not found post with id" + id })
+                return res.status(400).send({ message: "Not found post with id" + postId })
             } else {
                 res.send(data)
             }
@@ -90,19 +93,20 @@ exports.delete = (req, res) => {
 }
 
 // update /profile/:postId - update a single comment with an id 
-exports.update = (req, res) => {
+exports.updatePost = async (req, res) => {
     if(!req.userId){
         res.status(400).send({message: "You can only update your own post!"})
     }
-    const id = req.params.postId
-    Post.findByIdAndUpdate(
-        {_id: id},
-        {image: req.body.image},
-        {description: req.body.description}, 
+    const postId = req.params.postId
+
+    const updatedPost = { username, image, description, _id: id };
+
+    await Post.findByIdAndUpdate(
+        { _id: postId }, updatedPost, { new: true }
     )
     .then((data) => {
         if(!data) {
-            res.status(400).send({message: "Post not found with id" + id})
+            res.status(400).send({message: "Post not found with id" + postId})
         } else {
             res.send(data)
         }
@@ -115,3 +119,26 @@ exports.update = (req, res) => {
     })
 }
 
+// update /profile/:postId && /home/:postId
+exports.likePost = async (req, res) => {
+    const postId = req.params.postId
+
+    await Post.findByIdAndUpdate(
+        { _id: postId }, { likeCount: post.likeCount + 1 }, { new: true }
+    )
+    .then((data) => {
+        if(!data) {
+            res.status(400).send({message: "Post not found with id" + postId})
+        } else {
+            res.send(data)
+        }
+    })
+    .catch((err) => {
+        res.status(500).send({
+            message:
+            err.message || "Some error occured while liking this post!"
+        })
+    })
+
+    res.json(updatedPost);
+}
