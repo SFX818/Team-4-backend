@@ -4,7 +4,7 @@ const db = require('../models/index')
 const User = db.user
 const Role = db.role
 
-//This will give us access to encodeand decode the jwt itself (allows us to workwith jwt)
+//This will give us access to encode and decode the jwt itself (allows us to workwith jwt)
 const jwt = require('jsonwebtoken')
 //For hashing / encrypting out passwords
 const bcrypt = require('bcryptjs')
@@ -14,6 +14,8 @@ exports.signup = (req, res) => {
     const password = await req.body.password
 
     //We are going to make out user object using the params returned from req
+    const password = await req.body.password
+
     const user = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -24,14 +26,14 @@ exports.signup = (req, res) => {
         password: bcrypt.hashSync(password, 8),
     })
     // We save that user, and if there is an error, we throw that error
-    user.save((err, user) => {
+    await user.save((err, user) => {
         if (err) {
             res.status(500).send({message: err})
             return
         }
         //If no error, we check if roles was passed on req.params
         if(req.body.roles) {
-            Role.find({
+            await Role.find({
                 name: {$in: req.body.roles}
             }, (err, roles) => {
                 if (err) {
@@ -54,7 +56,7 @@ exports.signup = (req, res) => {
             })
 
         } else {
-            Role.findOne({name: 'user'}, (err, role) => {
+            await Role.findOne({name: 'user'}, (err, role) => {
                 if(err) {
                     res.status(500).send({message: err})
                     return
@@ -73,6 +75,8 @@ exports.signup = (req, res) => {
             })
         }
 
+    }).catch(err => {
+        console.log(err)
     })
 }
 
@@ -117,6 +121,8 @@ exports.signin = (req, res) => {
             id: user._id,
             username: user.username,
             email: user.email,
+            city: user.city,
+            profilePic: user.profilePic,
             roles: authorities,
             accessToken: token
         })
