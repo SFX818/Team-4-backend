@@ -9,7 +9,7 @@ exports.allAccess = (req, res) => {
 // displays user profile
 exports.userBoard = async (req, res) => {
     // Find all the post in the database
-    const id = req.params.userId
+    const id = req.userId
     await User.findById(
         { _id: id })
         .then((data) => {
@@ -26,7 +26,7 @@ exports.userBoard = async (req, res) => {
 // displays pet components (find all user's pets)
 exports.findUserPets = async (req, res) => {
     // Find all the post in the database
-    const id = req.params.userId
+    const id = req.userId
     await Pet.find(
         { _id: id })
         .then((data) => {

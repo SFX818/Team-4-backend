@@ -11,12 +11,17 @@ const bcrypt = require('bcryptjs')
 
 //This will handle stand up
 exports.signup = (req, res) => {
-    
+    const password = await req.body.password
+
     //We are going to make out user object using the params returned from req
     const user = new User({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
         username: req.body.username,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 8)
+        city: req.body.city,
+        profilePic: req.body.profilePic,
+        password: bcrypt.hashSync(password, 8),
     })
     // We save that user, and if there is an error, we throw that error
     user.save((err, user) => {
