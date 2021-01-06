@@ -3,13 +3,13 @@ const mongoose = require('mongoose')
 const User = mongoose.model(
     "User",
     new mongoose.Schema({
-        firstName: String,
-        lastName: String,
         username: String,
         email: String,
         city: String,
         password: String,
-        profilePic: String,
+        profilePic: {
+            type: String
+        },
         posts: [
             {
                 type: mongoose.Schema.Types.ObjectId,

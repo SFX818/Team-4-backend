@@ -31,7 +31,6 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
         next();
       });
     });
-  };
 
   checkRolesExisted = (req, res, next) => {
     if (req.body.roles) {
@@ -46,10 +45,11 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
     }
     next();
   };
+};
 
-  const verifySignUp = {
-    checkDuplicateUsernameOrEmail,
-    checkRolesExisted
-  };
+const verifySignUp = {
+  checkDuplicateUsernameOrEmail,
+  checkRolesExisted
+};
 
-  module.exports = verifySignUp;
+module.exports = verifySignUp;

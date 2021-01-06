@@ -10,18 +10,15 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
 //This will handle stand up
-exports.signup = (req, res) => {
-    //We are going to make our user object using the params returned from req
-    const password = req.body.password
+exports.signup = function(req, res) {
 
+    //We are going to make our user object using the params returned from req
     const user = new User({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
         username: req.body.username,
         email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, 8),
         city: req.body.city,
-        profilePic: req.body.profilePic,
-        password: bcrypt.hashSync(password, 8),
+        profilePic: req.body.profilePic
     })
     // We save that user, and if there is an error, we throw that error
     user.save((err, user) => {
@@ -80,7 +77,7 @@ exports.signup = (req, res) => {
 
 exports.signin = (req, res) => {
     User.findOne({
-        username: req.body.username
+        username: req.body.username,
     })
     //Populates values from the roles id we stored in the document
     .populate('roles', '-__v')
@@ -90,30 +87,34 @@ exports.signin = (req, res) => {
             res.status(500).send({message: err})
             return
         }
+
         //If user did not exist
         if(!user) {
             res.status(404).send({message: "User not found"})
         }
-        //Validate the password by passing req.body password and the password returned from db
-        //over to bcrypt to unhash and compare
+
+        // Validate the password by passing req.body password and the password returned from db
+        // over to bcrypt to unhash and compare
         const passwordIsValid = bcrypt.compareSync(
             req.body.password, //Unencrypted password from req.body
             user.password //Encrypted password saved in database
         )
         //If password is valid, we generate a new token
         if(!passwordIsValid) {
-            return res.status(401).send({accessToken: null, message: 'Invalid password'})
+            return res.status(401).send({ accessToken: null, message: 'Invalid password' })
         }
 
         const token = jwt.sign({id: user.id}, config.secret, {
             expiresIn: 86400 //Expires token in 24 hours
         })
+
         //Setting roles to pass back in our response
         let authorities = []
 
         for (let i = 0; i < user.roles.length; i++) {
             authorities.push('ROLE_' + user.roles[i].name.toUpperCase())
         }
+        
         //Sending that response back
         res.status(200).send({
             id: user._id,
