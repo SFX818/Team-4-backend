@@ -103,8 +103,9 @@ exports.signin = (req, res) => {
             return res.status(401).send({ accessToken: null, message: "invalid password" })
         }
 
-        const token = jwt.sign({id: user.id}, config.secret, {
-            expiresIn: 86400 //Expires token in 24 hours
+        // is password is valid we generage a new token
+        const token = jwt.sign({ id: user._id }, config.secret, {
+            expiresIn: 86400// expires token in 24 hours
         })
         //Setting roles to pass back in our response
         let authorities = []
