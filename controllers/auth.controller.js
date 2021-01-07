@@ -4,19 +4,24 @@ const db = require('../models/index')
 const User = db.user
 const Role = db.role
 
-//This will give us access to encodeand decode the jwt itself (allows us to workwith jwt)
+//This will give us access to encode and decode the jwt itself (allows us to workwith jwt)
 const jwt = require('jsonwebtoken')
 //For hashing / encrypting out passwords
 const bcrypt = require('bcryptjs')
 
 //This will handle stand up
 exports.signup = (req, res) => {
-    
-    //We are going to make out user object using the params returned from req
+    //We are going to make our user object using the params returned from req
+    const password = req.body.password
+
     const user = new User({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
         username: req.body.username,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 8)
+        city: req.body.city,
+        profilePic: req.body.profilePic,
+        password: bcrypt.hashSync(password, 8),
     })
     // We save that user, and if there is an error, we throw that error
     user.save((err, user) => {
@@ -68,6 +73,8 @@ exports.signup = (req, res) => {
             })
         }
 
+    }).catch(err => {
+        console.log(err)
     })
 }
 
@@ -112,6 +119,8 @@ exports.signin = (req, res) => {
             id: user._id,
             username: user.username,
             email: user.email,
+            city: user.city,
+            profilePic: user.profilePic,
             roles: authorities,
             accessToken: token
         })

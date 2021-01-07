@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const Post = mongoose.model(
     "Post",
     new mongoose.Schema({
+        username: String,
         image: String,
         description: String,
         likeCount: {
