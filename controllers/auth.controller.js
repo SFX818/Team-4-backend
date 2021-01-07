@@ -11,7 +11,6 @@ const bcrypt = require('bcryptjs')
 
 // This will handle stand up
 exports.signup = (req,res) => {
-    
     // we are going to make out user object using the params returned from req
     const user = new User({
         username: req.body.username,
@@ -114,7 +113,7 @@ exports.signin = (req, res) => {
         for ( let i = 0; i < user.roles.length; i++) {
             authorities.push("ROLE_" + user.roles[i].name.toUpperCase())
         }
-        // seding that response back
+        // sending that response back
         res.status(200).send({
             id: user._id,
             username: user.username,
