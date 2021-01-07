@@ -97,9 +97,10 @@ exports.signin = (req, res) => {
             req.body.password, //Unencrypted password from req.body
             user.password //Encrypted password saved in database
         )
-        //If password is valid, we generate a new token
-        if(!passwordIsValid) {
-            return res.status(401).send({accessToken: null, message: 'Invalid password'})
+        // if password is not valid, we returning invalid password
+        //return a boolean
+        if (!passwordIsValid) {
+            return res.status(401).send({ accessToken: null, message: "invalid password" })
         }
 
         const token = jwt.sign({id: user.id}, config.secret, {
