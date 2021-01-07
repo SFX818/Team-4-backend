@@ -10,16 +10,15 @@ const Post = mongoose.model(
             type: Number,
             default: 0
         },
+        comments: [{
+            name: '',
+            comment: '',
+            createdAt: new Date()
+        }],
         createdAt: {
             type: Date,
             default: new Date()
-        },
-        comments: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Comment"
-            }
-        ]
+        }
     })
 )
 
