@@ -12,17 +12,14 @@ const bcrypt = require('bcryptjs')
 //This will handle stand up
 exports.signup = (req, res) => {
     //We are going to make our user object using the params returned from req
-    const password = req.body.password
+    
 
     const user = new User({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
         username: req.body.username,
         email: req.body.email,
-        city: req.body.city,
-        profilePic: req.body.profilePic,
         password: bcrypt.hashSync(password, 8),
     })
+
     // We save that user, and if there is an error, we throw that error
     user.save((err, user) => {
         if (err) {
@@ -92,7 +89,7 @@ exports.signin = (req, res) => {
         }
         //If user did not exist
         if(!user) {
-            res.status(404).send({message: "User not found"})
+            return res.status(404).send({message: "User not found"})
         }
         //Validate the password by passing req.body password and the password returned from db
         //over to bcrypt to unhash and compare
@@ -100,14 +97,17 @@ exports.signin = (req, res) => {
             req.body.password, //Unencrypted password from req.body
             user.password //Encrypted password saved in database
         )
-        //If password is valid, we generate a new token
-        if(!passwordIsValid) {
-            return res.status(401).send({accessToken: null, message: 'Invalid password'})
+        // if password is not valid, we returning invalid password
+        //return a boolean
+        if (!passwordIsValid) {
+            return res.status(401).send({ accessToken: null, message: "invalid password" })
         }
 
-        const token = jwt.sign({id: user.id}, config.secret, {
-            expiresIn: 86400 //Expires token in 24 hours
+        // is password is valid we generage a new token
+        const token = jwt.sign({ id: user._id }, config.secret, {
+            expiresIn: 86400// expires token in 24 hours
         })
+
         //Setting roles to pass back in our response
         let authorities = []
 
@@ -119,8 +119,6 @@ exports.signin = (req, res) => {
             id: user._id,
             username: user.username,
             email: user.email,
-            city: user.city,
-            profilePic: user.profilePic,
             roles: authorities,
             accessToken: token
         })
