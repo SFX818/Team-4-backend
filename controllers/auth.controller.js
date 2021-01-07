@@ -19,6 +19,7 @@ exports.signup = (req, res) => {
         email: req.body.email,
         password: bcrypt.hashSync(password, 8),
     })
+
     // We save that user, and if there is an error, we throw that error
     user.save((err, user) => {
         if (err) {
@@ -88,7 +89,7 @@ exports.signin = (req, res) => {
         }
         //If user did not exist
         if(!user) {
-            res.status(404).send({message: "User not found"})
+            return res.status(404).send({message: "User not found"})
         }
         //Validate the password by passing req.body password and the password returned from db
         //over to bcrypt to unhash and compare
