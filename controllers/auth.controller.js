@@ -107,6 +107,7 @@ exports.signin = (req, res) => {
         const token = jwt.sign({ id: user._id }, config.secret, {
             expiresIn: 86400// expires token in 24 hours
         })
+
         //Setting roles to pass back in our response
         let authorities = []
 
@@ -118,8 +119,6 @@ exports.signin = (req, res) => {
             id: user._id,
             username: user.username,
             email: user.email,
-            city: user.city,
-            profilePic: user.profilePic,
             roles: authorities,
             accessToken: token
         })
