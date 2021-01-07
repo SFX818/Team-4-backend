@@ -12,7 +12,7 @@ const bcrypt = require('bcryptjs')
 //This will handle stand up
 exports.signup = (req, res) => {
     //We are going to make our user object using the params returned from req
-    const password = req.body.password
+    
 
     const user = new User({
         firstName: req.body.firstName,
