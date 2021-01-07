@@ -8,7 +8,7 @@ const Post = mongoose.model(
         description: String,
         likeCount: {
             type: Number,
-            default: 0
+            default: []
         },
         comments: [{
             name: '',

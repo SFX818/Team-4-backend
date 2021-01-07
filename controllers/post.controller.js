@@ -37,7 +37,7 @@ exports.findOne = async (req, res) => {
 }
 
 // post /profile/post - create a post
-exports.createPost = async (req,res) => {
+exports.createPost = (req,res) => {
     // make sure to write it out later
     const { username, image, description } = req.body;
     //Validate request
@@ -47,7 +47,7 @@ exports.createPost = async (req,res) => {
     //Create a post
     const newPost = new Post({ username, image, description })
     // Save Post in the database
-    await newPost
+    newPost
         .save()
         .then((data) => {
             res.status(201).send(data)

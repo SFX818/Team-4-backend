@@ -2,13 +2,12 @@ const db = require("../models")
 
 const Pet = db.pet
 const User = db.user
-const JournalEntry = db.journalEntry
-const Milestone = db.milestone
+// const JournalEntry = db.journalEntry
+// const Milestone = db.milestone
 
-//Find a single Tutorial with an id (GET)
+//Find a single pet with an id (GET)
 exports.findOne = (req, res) => {
     const id = req.params.petId
-    const userId = req.params.username
     //Find pet by the id being passed by id
     Pet.findById(id).then((data) => {
         if(!data) {
