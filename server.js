@@ -4,7 +4,7 @@ const dbConfig = require('./config/db.config')
 const cors = require('cors')
 
 const app = express()
-
+require('dotenv').config()
 app.use(cors())
 
 // might refactor to limit image file size "({ limit: "30mb", extended...})""
@@ -18,8 +18,10 @@ app.use(bodyParser.urlencoded({extended: true}))
 const db = require('./models/index.js')
 const Role = db.role
 
+const dbURI = process.env.MONGODB_URI || `mongodb:${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`
+
 db.mongoose
-  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+  .connect(dbURI, {
       useNewUrlParser: true,
       useUnifiedTopology: true
   })
