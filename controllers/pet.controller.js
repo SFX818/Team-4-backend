@@ -33,7 +33,7 @@ exports.createPet = (req,res) => {
         image: req.body.image
     })
     // Save Pet in the database
-    pet
+    newPet
         .save(pet)
         .then((data) => {
             res.status(201).send(data)
@@ -44,6 +44,17 @@ exports.createPet = (req,res) => {
                     err.message || "Some error occured while creating a Pet."
             })
         })
+    User.pets
+    .push(newPet)
+    .then((data) => {
+    res.status(201).send(data)
+    })
+    .catch((err) => {
+        res.status(500).send({
+            message:
+                err.message || "Some error occured while adding pet to user."
+        })
+    })
 }
 
 //Update a pet with id (UPDATE)
