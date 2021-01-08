@@ -31,7 +31,6 @@ exports.createPet = (req,res) => {
         birthday: req.body.birthday,
         species: req.body.species,
         image: req.body.image
-
     })
     // Save Pet in the database
     pet
@@ -51,7 +50,7 @@ exports.createPet = (req,res) => {
 exports.updatePet = (req, res) => {
     const id = req.params.petId
     Pet.findByIdAndUpdate(
-        {pet_id: id},
+        {_id: id},
         {name: req.body.name},
         {breed: req.body.breed}, 
         {birthday: req.body.birthday}, 
@@ -83,12 +82,7 @@ exports.deletePet = (req, res) => {
         }
     )
     Pet.findByIdAndDelete(
-        {pet_id: id},
-        {name: req.body.name},
-        {breed: req.body.breed}, 
-        {birthday: req.body.birthday}, 
-        {species: req.body.species}, 
-        {image: req.body.image},
+        {_id: id}
     )
     .then((data) => {
         if(!data) {
