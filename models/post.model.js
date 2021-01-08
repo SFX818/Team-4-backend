@@ -8,18 +8,16 @@ const Post = mongoose.model(
         description: String,
         likeCount: {
             type: Number,
-            default: 0
+            default: []
         },
+        comments: [{
+            name: '',
+            comment: ''
+        }],
         createdAt: {
             type: Date,
             default: new Date()
-        },
-        comments: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Comment"
-            }
-        ]
+        }
     })
 )
 

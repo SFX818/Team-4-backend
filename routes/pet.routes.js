@@ -6,16 +6,16 @@ let router = require("express").Router();
 
 module.exports = app => {
     // get user's pet's profile to render journal entries
-    router.get("/:petId", pet.findOne)
+    router.get("/:petId", pet.findPet)
 
-    //Form to add pet a pet to user profile
-    router.post('/pet', pet.create)
+    //Form to add pet to user profile
+    router.post('/pet', pet.createPet)
     
     //Update a pet with id
-    router.put('/:petId', pet.update)
+    router.put('/:petId', pet.updatePet)
 
     //Delete a pet
-    router.delete('/:petId', pet.delete)
+    router.delete('/:petId', pet.deletePet)
 
     // // post route for user's pet's journal entry
     // router.post("/:petId/journal", journalEntry.create)
