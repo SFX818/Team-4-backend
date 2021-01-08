@@ -1,7 +1,3 @@
 node_modules
 package-lock.json
-<<<<<<< HEAD
 config/auth.config.js
-=======
-.env
->>>>>>> upstream/main

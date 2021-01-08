@@ -6,7 +6,7 @@ const User = db.user
 // const Milestone = db.milestone
 
 //Find a single pet with an id (GET)
-exports.findOne = (req, res) => {
+exports.findPet = (req, res) => {
     const id = req.params.petId
     //Find pet by the id being passed by id
     Pet.findById(id).then((data) => {
@@ -19,7 +19,7 @@ exports.findOne = (req, res) => {
 }
 
 //Create and save pet (POST)
-exports.create = (req,res) => {
+exports.createPet = (req,res) => {
     //Validate request
     if(!req.body.name){
         res.status(400).send({message: "Name cannot be empty!"})
@@ -48,7 +48,7 @@ exports.create = (req,res) => {
 }
 
 //Update a pet with id (UPDATE)
-exports.update = (req, res) => {
+exports.updatePet = (req, res) => {
     const id = req.params.petId
     Pet.findByIdAndUpdate(
         {pet_id: id},
@@ -74,7 +74,7 @@ exports.update = (req, res) => {
 }
 
 //Delete a pet with id (DELETE)
-exports.delete = (req, res) => {
+exports.deletePet = (req, res) => {
     const id = req.params.petId
     User.findByIdandUpdate(
         { _id: req.userId },

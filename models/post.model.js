@@ -12,8 +12,7 @@ const Post = mongoose.model(
         },
         comments: [{
             name: '',
-            comment: '',
-            createdAt: new Date()
+            comment: ''
         }],
         createdAt: {
             type: Date,

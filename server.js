@@ -5,7 +5,6 @@ const cors = require('cors')
 
 const app = express()
 require('dotenv').config()
-app.use(cors())
 
 // might refactor to limit image file size "({ limit: "30mb", extended...})""
 // Parse requests of content type - application/json
@@ -13,6 +12,8 @@ app.use(bodyParser.json({limit: '50mb', extended: true}));
 
 // Parse request of content type = application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
+app.use(cors())
 
 // Setup Mongoose
 const db = require('./models/index.js')
