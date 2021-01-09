@@ -5,7 +5,9 @@
 ### [Deployed API](https://petflix.herokuapp.com/)
 
 ## Backend Tech Used
-​
+* Mongoose
+* VS Code
+* Javascript​
 * Notion & Github - for team project management 
 * Whimsicle - for wireframes & ODM planning
 ​
@@ -20,7 +22,8 @@ The main idea is to implement both a social and personal element to the app. Bey
 ## Installation Instructions
 To install the backend, please do the following:
 > npm i
-> npm install
+>
+> npm start
 ​
 ## Models 
 ### Click [here](https://whimsical.com/project-3-erd-V75TJEWCVNyXFmRUZPRj8z) for the object-document mapping.
