@@ -17,7 +17,7 @@ exports.signup = (req, res) => {
     const user = new User({
         username: req.body.username,
         email: req.body.email,
-        password: bcrypt.hashSync(password, 8),
+        password: bcrypt.hashSync(req.body.password, 8),
     })
 
     // We save that user, and if there is an error, we throw that error
