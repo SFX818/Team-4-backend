@@ -5,6 +5,8 @@
 ### [Deployed API](https://petflix.herokuapp.com/)
 
 ## Backend Tech Used
+* React
+* Redux
 * Mongoose
 * VS Code
 * Javascript​
