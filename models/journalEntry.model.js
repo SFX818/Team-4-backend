@@ -5,6 +5,18 @@ const JournalEntry = mongoose.model(
     new mongoose.Schema({
         heading: String,
         content: String,
+        pet: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Pet"
+            }
+        ],
+        user: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            }
+        ]
     },
     {timestamps: true})
 )

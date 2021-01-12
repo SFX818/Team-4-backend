@@ -26,7 +26,7 @@ exports.signup = (req,res) => {
         }
 
         // if no error we check if roles was passed on req.body
-        if( req.body.roles) {
+        if(req.body.roles) {
             Role.find({
                 name: { $in: req.body.roles}
             }, (err, roles) => {
@@ -37,14 +37,14 @@ exports.signup = (req,res) => {
                 
                 // pass roles id from query above to user.roles assigne user and admin
                 user.roles = roles.map( role => role._id)
-                // save our updates users
+                // save our updated users
                 user.save(err =>{
                     if (err) {
                         res.status(500).send({message: err})
                         return
                     }
 
-                    res.send({message: "User creates successfully"})
+                    res.send({message: "User created successfully"})
                     
                 })
 

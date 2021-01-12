@@ -19,7 +19,7 @@ app.use(cors())
 const db = require('./models/index.js')
 const Role = db.role
 
-const dbURI = process.env.MONGODB_URI || `mongodb:${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`
+const dbURI = process.env.MONGODB_URI || `mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`
 
 db.mongoose
   .connect(dbURI, {

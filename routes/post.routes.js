@@ -10,14 +10,20 @@ module.exports = app => {
     // get route for a specific post + form for comments
     router.get("/:postId", posts.findOne)
 
+    // post route to create new post
+    router.post('/upload', posts.createPost)
+
     // put route for likes on a specific post
     router.put('/:postId/likePost', posts.likePost);
-    
-    // post route to create a comment
-    router.post("/:postId", comment.create)
 
-    // delete route for comments
-    router.delete('/:postId/:commentId', comment.delete)
+    // delete route for likes on a specific post
+    router.delete('/:postId', posts.deletePost)
+    
+    // // post route to create a comment
+    // router.post("/:postId/comment", comment.create)
+
+    // // delete route for comments
+    // router.delete('/:postId/:commentId', comment.delete)
     
     // pet route to connect to express & router method
     app.use('/home', router)

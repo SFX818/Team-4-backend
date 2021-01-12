@@ -7,7 +7,7 @@ const User = db.user
 
 //Find a single pet with an id (GET)
 exports.findPet = (req, res) => {
-    const id = req.params.petId
+    const { id }= req.params
     //Find pet by the id being passed by id
     Pet.findById(id).then((data) => {
         if(!data) {
@@ -23,6 +23,7 @@ exports.createPet = (req,res) => {
     //Validate request
     if(!req.body.name){
         res.status(400).send({message: "Name cannot be empty!"})
+        return
     }
     //Create a pet
     const pet =  new Pet({
@@ -37,12 +38,14 @@ exports.createPet = (req,res) => {
         .save(pet)
         .then((data) => {
             res.status(201).send(data)
+            return
         })
         .catch((err) => {
             res.status(500).send({
                 message:
                     err.message || "Some error occured while creating a Pet."
             })
+            return
         })
     User.pets
     .push(newPet)
@@ -59,7 +62,7 @@ exports.createPet = (req,res) => {
 
 //Update a pet with id (UPDATE)
 exports.updatePet = (req, res) => {
-    const id = req.params.petId
+    const { id }= req.params
     Pet.findByIdAndUpdate(
         {_id: id},
         {name: req.body.name},
@@ -85,7 +88,7 @@ exports.updatePet = (req, res) => {
 
 //Delete a pet with id (DELETE)
 exports.deletePet = (req, res) => {
-    const id = req.params.petId
+    const { id }= req.params
     User.findByIdandUpdate(
         { _id: req.userId },
         {

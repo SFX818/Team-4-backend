@@ -4,8 +4,8 @@ const Post = db.post
 const User = db.user
 
 // read /home - find all the post in the database
-exports.findAll = async (req, res) => {
-    await Post.find()
+exports.findAll = (req, res) => {
+    Post.find()
         .then((data) => {
             res.send(data);
         }).catch((err) => {
@@ -16,10 +16,37 @@ exports.findAll = async (req, res) => {
         })
 }
 
+exports.createPost = (req, res) => {
+    const post = new Post({
+        image: req.body.image,
+        description: req.body.description,
+        user: req.userId
+    })
+    console.log(post)
+    User.updateOne({ _id: req.userId },
+        { $addToSet: { posts: post } })
+        .exec((err, user) => {
+            console.log(user)
+            if (err) {
+                res.status(500).send({ message: err })
+                return
+            }
+        }) 
+    post.save(err => {
+        if (err) {
+            res.status(500).send({ message: err })
+            return
+        }
+        res.send("Post created successfully!")
+    })
+}
+
+
+
 // read /home/:postId - find a single post with an id
-exports.findOne = async (req, res) => {
-    const postId = req.params.postId;
-    await Post.findById(
+exports.findOne = (req, res) => {
+    const postId = req.params.postId
+    Post.findById(
         { _id: postId })
         .then((data) => {
             // validation
@@ -36,59 +63,23 @@ exports.findOne = async (req, res) => {
         })
 }
 
-// post /profile/post - create a post
-exports.createPost = (req,res) => {
-    // make sure to write it out later
-    const user_id = req.userId
-    const { username, image, description } = req.body;
-    //Validate request
-    if(!req.body.username){
-        res.status(400).send({message: "Username cannot be empty!"})
-    }
-    //Create a post
-    const newPost = new Post({ user_id, username, image, description })
-    // Save Post in the database
-    newPost
-        .save()
-        .then((data) => {
-            res.status(201).send(data)
-        })
-        .catch((err) => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occured while creating a post."
-            })
-        })
-    User.posts
-        .push(newPost)
-        .then((data) => {
-        res.status(201).send(data)
-        })
-        .catch((err) => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occured while adding post to user."
-            })
-        })
-}
-
 
 // delete /profile/:postId - delete a single post with an id 
 exports.deletePost = (req, res) => {
     if(!req.userId){
         res.status(400).send({message: "You can only delete your own post!"})
     }
-    const { id } = req.params
+    const postId = req.params.postId
 
     User.findByIdAndUpdate(
         { _id: req.userId },
         {
             "$pull": { ObjectId: id }
-        }
+        },
     )
     // delete post by the id being passed by id
     Post.deleteOne(
-        { _id: id })
+        { _id: postId })
         .then((data) => {
             // validation
             if (!data) {
@@ -109,12 +100,12 @@ exports.updatePost = (req, res) => {
     if(!req.userId){
         res.status(400).send({message: "You can only update your own post!"})
     }
-    const { id } = req.params
+    const postId = req.params.postId
 
-    const updatedPost = { username, image, description, _id: id };
+    const updatedPost = { username, image, description };
 
     Post.findByIdAndUpdate(
-        { _id: id }, updatedPost, { new: true }
+        { _id: postId }, updatedPost, { new: true }
     )
     .then((data) => {
         if(!data) {
@@ -133,10 +124,10 @@ exports.updatePost = (req, res) => {
 
 // update /profile/:postId && /home/:postId
 exports.likePost = (req, res) => {
-    const { id } = req.params
+    const postId = req.params.postId
 
     const post = Post.findByIdAndUpdate(
-        { _id: id }, { likeCount: post.likeCount + 1 }, { new: true }
+        { _id: postId }, { likeCount: post.likeCount + 1 }, { new: true }
     )
     .then((data) => {
         if(!data) {
