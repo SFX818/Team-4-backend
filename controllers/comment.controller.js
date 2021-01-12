@@ -19,7 +19,7 @@ exports.findAll = (req, res) => {
 }
 
 // post /home/:post_id/comment - creates a comment for specific post
-exports.create = (req, res) => {
+exports.createComment = (req, res) => {
     if(!req.body.username){
         res.status(400).send({ message: "Please enter your username!"})
         return;
@@ -45,7 +45,7 @@ exports.create = (req, res) => {
 }
 
 // delete /home/:post_id/:commentId - delete a single comment with an id 
-exports.delete = (req, res) => {
+exports.deleteComment = (req, res) => {
     const postId = req.params.postId;
     const id = req.params.commentId
     // delete tutorial by the id being passed by id

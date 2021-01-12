@@ -3,17 +3,24 @@ const mongoose = require('mongoose')
 const Post = mongoose.model(
     "Post",
     new mongoose.Schema({
-        username: String,
         image: String,
         description: String,
+        user: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User'
+            }
+        ],
         likeCount: {
             type: Number,
-            default: []
+            default: 0
         },
-        comments: [{
-            name: '',
-            comment: ''
-        }],
+        comments: [
+            {
+                name: '',
+                comment: ''
+            }
+        ],
         createdAt: {
             type: Date,
             default: new Date()

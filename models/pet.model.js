@@ -8,6 +8,12 @@ const Pet = mongoose.model(
         birthday: Date,
         species: String,
         image: String,
+        user: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            }
+        ],
         journalEntries: [
             {
                 type: mongoose.Schema.Types.ObjectId,
