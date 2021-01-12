@@ -102,7 +102,7 @@ exports.updatePost = (req, res) => {
     }
     const postId = req.params.postId
 
-    const updatedPost = { username, image, description };
+    const updatedPost = { user, image, description };
 
     Post.findByIdAndUpdate(
         { _id: postId }, updatedPost, { new: true }
