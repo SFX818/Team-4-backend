@@ -13,11 +13,11 @@ const bcrypt = require('bcryptjs')
 exports.signup = (req, res) => {
     //We are going to make our user object using the params returned from req
     
-
+    console.log(req.body)
     const user = new User({
         username: req.body.username,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 8),
+        password: bcrypt.hashSync(req.body.password, 8)
     })
 
     // We save that user, and if there is an error, we throw that error
@@ -70,8 +70,6 @@ exports.signup = (req, res) => {
             })
         }
 
-    }).catch(err => {
-        console.log(err)
     })
 }
 
