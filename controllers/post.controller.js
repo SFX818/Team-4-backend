@@ -6,7 +6,6 @@ const User = db.user
 // read /home - find all the post in the database
 exports.findAll = (req, res) => {
     Post.find()
-        .populate("user", "_id Name")
         .sort("createdAt")
         .then((data) => {
             res.send(data);
