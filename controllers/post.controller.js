@@ -32,11 +32,11 @@ exports.createPost = (req, res) => {
         { _id: post.user },
         { $addToSet: { posts: [post] } },
         function(err, result) {
-          if (err) {
-            res.send(err);
-          } else {
-            res.send(result);
-          }
+            if (err) {
+                res.send(err);
+            } else {
+                res.send(result);
+            }
         }
     )
 }
@@ -62,28 +62,20 @@ exports.findOne = (req, res) => {
 }
 
 
-// delete /profile/:postId - delete a single post with an id 
 exports.deletePost = (req, res) => {
-    if(!req.userId){
-        res.status(400).send({message: "You can only delete your own post!"})
+    if (!req.userId) {
+        res.status(400).send({ message: "You can only delete your own post!" })
     }
     const postId = req.params.postId
 
-    User.findByIdAndUpdate(
-        { _id: req.userId },
-        {
-            "$pull": { ObjectId: id }
-        },
-    )
     // delete post by the id being passed by id
     Post.deleteOne(
         { _id: postId })
         .then((data) => {
             // validation
+            console.log("here is the delete data for deleting!!:", data)
             if (!data) {
                 return res.status(400).send({ message: "Not found post with id" + postId })
-            } else {
-                res.send(data)
             }
         }).catch((err) => {
             res.status(500).send({
@@ -91,6 +83,19 @@ exports.deletePost = (req, res) => {
                     err.message || "Some error occurred while deleting one post"
             })
         })
+    User.findByIdAndUpdate(
+        { _id: req.userId },
+        {
+            "$pull": { ObjectId: postId }
+        },
+        function (err, result) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.send(result);
+            }
+        }
+    )
 }
 
 // update /profile/:postId - update a single comment with an id 
@@ -124,8 +129,8 @@ exports.updatePost = (req, res) => {
 exports.likePost = (req, res) => {
     const postId = req.params.postId
 
-    const post = Post.findByIdAndUpdate(
-        { _id: postId }, { likeCount: post.likeCount + 1 }, { new: true }
+    Post.findByIdAndUpdate(
+        { _id: postId }, { $inc: { 'likeCount': 1 } }, { new: true }
     )
     .then((data) => {
         if(!data) {
@@ -134,12 +139,12 @@ exports.likePost = (req, res) => {
             res.send(data)
         }
     })
-    .catch((err) => {
-        res.status(500).send({
-            message:
-            err.message || "Some error occured while liking this post!"
-        })
-    })
+    // .catch((err) => {
+    //     res.status(500).send({
+    //         message:
+    //         err.message || "Some error occured while liking this post!"
+    //     })
+    // })
 
-    res.json(updatedPost);
+    // res.json(updatedPost);
 }
