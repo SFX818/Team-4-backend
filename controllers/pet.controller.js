@@ -2,13 +2,12 @@ const db = require("../models")
 
 const Pet = db.pet
 const User = db.user
-const JournalEntry = db.journalEntry
-const Milestone = db.milestone
+// const JournalEntry = db.journalEntry
+// const Milestone = db.milestone
 
-//Find a single Tutorial with an id (GET)
-exports.findOne = (req, res) => {
-    const id = req.params.petId
-    const userId = req.params.username
+//Find a single pet with an id (GET)
+exports.findPet = (req, res) => {
+    const { id }= req.params
     //Find pet by the id being passed by id
     Pet.findById(id).then((data) => {
         if(!data) {
@@ -20,10 +19,11 @@ exports.findOne = (req, res) => {
 }
 
 //Create and save pet (POST)
-exports.create = (req,res) => {
+exports.createPet = (req,res) => {
     //Validate request
     if(!req.body.name){
         res.status(400).send({message: "Name cannot be empty!"})
+        return
     }
     //Create a pet
     const pet =  new Pet({
@@ -32,27 +32,39 @@ exports.create = (req,res) => {
         birthday: req.body.birthday,
         species: req.body.species,
         image: req.body.image
-
     })
     // Save Pet in the database
-    pet
+    newPet
         .save(pet)
         .then((data) => {
             res.status(201).send(data)
+            return
         })
         .catch((err) => {
             res.status(500).send({
                 message:
                     err.message || "Some error occured while creating a Pet."
             })
+            return
         })
+    User.pets
+    .push(newPet)
+    .then((data) => {
+    res.status(201).send(data)
+    })
+    .catch((err) => {
+        res.status(500).send({
+            message:
+                err.message || "Some error occured while adding pet to user."
+        })
+    })
 }
 
 //Update a pet with id (UPDATE)
-exports.update = (req, res) => {
-    const id = req.params.petId
+exports.updatePet = (req, res) => {
+    const { id }= req.params
     Pet.findByIdAndUpdate(
-        {pet_id: id},
+        {_id: id},
         {name: req.body.name},
         {breed: req.body.breed}, 
         {birthday: req.body.birthday}, 
@@ -75,8 +87,8 @@ exports.update = (req, res) => {
 }
 
 //Delete a pet with id (DELETE)
-exports.delete = (req, res) => {
-    const id = req.params.petId
+exports.deletePet = (req, res) => {
+    const { id }= req.params
     User.findByIdandUpdate(
         { _id: req.userId },
         {
@@ -84,12 +96,7 @@ exports.delete = (req, res) => {
         }
     )
     Pet.findByIdAndDelete(
-        {pet_id: id},
-        {name: req.body.name},
-        {breed: req.body.breed}, 
-        {birthday: req.body.birthday}, 
-        {species: req.body.species}, 
-        {image: req.body.image},
+        {_id: id}
     )
     .then((data) => {
         if(!data) {
