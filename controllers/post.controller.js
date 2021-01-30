@@ -7,6 +7,7 @@ const User = db.user
 exports.findAll = (req, res) => {
     Post.find()
         .sort("createdAt")
+        .populate("user")
         .then((data) => {
             res.send(data);
         }).catch((err) => {
@@ -18,31 +19,27 @@ exports.findAll = (req, res) => {
 }
 
 exports.createPost = (req, res) => {
-    const post = new Post({
-        image: req.body.image,
-        description: req.body.description,
-        user: req.userId
-    })
-    console.log(post)
-    User.updateOne({ _id: req.userId },
-        { $addToSet: { posts: post } })
-        .exec((err, user) => {
-            console.log(user)
-            if (err) {
-                res.status(500).send({ message: err })
-                return
-            }
-        }) 
+    const post = new Post(
+        req.body.postData
+    )
     post.save(err => {
         if (err) {
             res.status(500).send({ message: err })
             return
         }
-        res.send("Post created successfully!")
     })
+    User.updateOne(
+        { _id: post.user },
+        { $addToSet: { posts: [post] } },
+        function(err, result) {
+          if (err) {
+            res.send(err);
+          } else {
+            res.send(result);
+          }
+        }
+    )
 }
-
-
 
 // read /home/:postId - find a single post with an id
 exports.findOne = (req, res) => {

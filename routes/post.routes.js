@@ -1,3 +1,4 @@
+// const { authJwt } = require('../middlewares')
 const posts = require("../controllers/post.controller")
 const comment = require('../controllers/comment.controller')
 
