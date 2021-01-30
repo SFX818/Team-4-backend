@@ -4,8 +4,10 @@ const Post = db.post
 const User = db.user
 
 // read /home - find all the post in the database
-exports.findAll = async (req, res) => {
-    await Post.find()
+exports.findAll = (req, res) => {
+    Post.find()
+        .sort("createdAt")
+        .populate("user")
         .then((data) => {
             res.send(data);
         }).catch((err) => {
@@ -16,10 +18,33 @@ exports.findAll = async (req, res) => {
         })
 }
 
+exports.createPost = (req, res) => {
+    const post = new Post(
+        req.body.postData
+    )
+    post.save(err => {
+        if (err) {
+            res.status(500).send({ message: err })
+            return
+        }
+    })
+    User.updateOne(
+        { _id: post.user },
+        { $addToSet: { posts: [post] } },
+        function(err, result) {
+          if (err) {
+            res.send(err);
+          } else {
+            res.send(result);
+          }
+        }
+    )
+}
+
 // read /home/:postId - find a single post with an id
-exports.findOne = async (req, res) => {
-    const postId = req.params.postId;
-    await Post.findById(
+exports.findOne = (req, res) => {
+    const postId = req.params.postId
+    Post.findById(
         { _id: postId })
         .then((data) => {
             // validation
@@ -36,30 +61,6 @@ exports.findOne = async (req, res) => {
         })
 }
 
-// post /profile/post - create a post
-exports.createPost = async (req,res) => {
-    // make sure to write it out later
-    const { username, image, description } = req.body;
-    //Validate request
-    if(!req.body.username){
-        res.status(400).send({message: "Username cannot be empty!"})
-    }
-    //Create a post
-    const newPost = new Post({ username, image, description })
-    // Save Post in the database
-    await newPost
-        .save()
-        .then((data) => {
-            res.status(201).send(data)
-        })
-        .catch((err) => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occured while creating a Pet."
-            })
-        })
-}
-
 
 // delete /profile/:postId - delete a single post with an id 
 exports.deletePost = (req, res) => {
@@ -71,8 +72,8 @@ exports.deletePost = (req, res) => {
     User.findByIdAndUpdate(
         { _id: req.userId },
         {
-            "$pull": { ObjectId: req.body.postId }
-        }
+            "$pull": { ObjectId: id }
+        },
     )
     // delete post by the id being passed by id
     Post.deleteOne(
@@ -93,15 +94,15 @@ exports.deletePost = (req, res) => {
 }
 
 // update /profile/:postId - update a single comment with an id 
-exports.updatePost = async (req, res) => {
+exports.updatePost = (req, res) => {
     if(!req.userId){
         res.status(400).send({message: "You can only update your own post!"})
     }
     const postId = req.params.postId
 
-    const updatedPost = { username, image, description, _id: id };
+    const updatedPost = { user, image, description };
 
-    await Post.findByIdAndUpdate(
+    Post.findByIdAndUpdate(
         { _id: postId }, updatedPost, { new: true }
     )
     .then((data) => {
@@ -120,10 +121,10 @@ exports.updatePost = async (req, res) => {
 }
 
 // update /profile/:postId && /home/:postId
-exports.likePost = async (req, res) => {
+exports.likePost = (req, res) => {
     const postId = req.params.postId
 
-    await Post.findByIdAndUpdate(
+    const post = Post.findByIdAndUpdate(
         { _id: postId }, { likeCount: post.likeCount + 1 }, { new: true }
     )
     .then((data) => {

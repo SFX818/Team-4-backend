@@ -1,6 +1,7 @@
 const db = require("../models")
 
 const User = db.user
+const Pet = db.pet
 
 exports.allAccess = (req, res) => {
     res.status(200).send("Welcome to Petflix!")
