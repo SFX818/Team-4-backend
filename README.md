@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # PetFlix - Backend
 ### [Frontend Repo](https://github.com/SFX818/Team-4-frontend)
 ### [Deployed API](https://petflix.herokuapp.com/)
@@ -15,15 +16,47 @@ Our general approach was to combine our passions and interests as a team to a fu
 Additionally, there would be an opportunity for users to add profiles for their own pets to provide more details should other users want to know more about a pet's name, species, breed, and so forth. 
 
 The main idea is to implement both a social and personal element to the app. Beyond user and pet profiles, users would have the ability to generate journal entries for their pet's day-to-day and log in milestones for those big pet moments. 
+=======
+# Team-4-Project
+
+# PetFlix - Backend
+### [Frontend Repo](https://github.com/SFX818/Team-4-frontend)
+### [Deployed API](https://petflix.herokuapp.com/)
+
+## Backend Tech Used
+* React
+* Redux
+* Mongoose
+* VS Code
+* Javascript​
+* Notion & Github - for team project management 
+* Whimsicle - for wireframes & ODM planning
+​
+​
+## General Approach
+Our general approach was to combine our passions and interests as a team to a fun, social media-based app that revolves around our treasured pets. This would allow users to upload pictures of their pets (among other CRUD functionalities) to share with other users. 
+​
+Additionally, there would be an opportunity for users to add profiles for their own pets to provide more details should other users want to know more about a pet's name, species, breed, and so forth. 
+​
+The main idea is to implement both a social and personal element to the app. Beyond user and pet profiles, users would have the ability to generate journal entries for their pet's day-to-day and log in milestones for those big pet moments. 
+
+>>>>>>> upstream/main
 ## Installation Instructions
 To install the backend, please do the following:
 > npm i
 >
 > npm start
+<<<<<<< HEAD
 
 ## Models 
 ### Click [here](https://whimsical.com/project-3-erd-V75TJEWCVNyXFmRUZPRj8z) for the object-document mapping.
 
+=======
+​
+## Models 
+### Click [here](https://whimsical.com/project-3-erd-V75TJEWCVNyXFmRUZPRj8z) for the object-document mapping.
+​
+>>>>>>> upstream/main
 ## RESTful Routes
 | Name                         | Action (CRUD) | Description                                                                                                                                | Notes    | 
 |------------------------------|---------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------| 
@@ -51,8 +84,15 @@ To install the backend, please do the following:
 | /profile/:petId/milestone    | POST          | creates a milestone event for a user's pet                                                                                                 | Stretch  | 
 | /profile/:petId/:milestoneId | PUT           | updates a milestone event for a user's pet                                                                                                 | Stretch  | 
 | /profile/:petId/:milestoneId | DELETE        | deletes a milestone event for a user's pet                                                                                                 | Stretch  | 
+<<<<<<< HEAD
 
 ## Major Hurdles & Unsolved Problems 
 At first, we had challenges with the slight learning curve of overall github management. 
 
+=======
+​
+## Major Hurdles & Unsolved Problems 
+At first, we had challenges with the slight learning curve of overall github management. 
+​
+>>>>>>> upstream/main
 Once we tackled that and got more skilled and familiar, the biggest hurdles were ensuring our routes and controllers were in good form as we did numerous testing and finetuning.
