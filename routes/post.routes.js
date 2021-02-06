@@ -19,7 +19,6 @@ module.exports = app => {
 
     // delete route for likes on a specific post
     router.delete('/:postId', [authJwt.verifyWebToken], posts.deletePost)
-
     // // post route to create a comment
     // router.post("/:postId/comment", comment.create)
 
